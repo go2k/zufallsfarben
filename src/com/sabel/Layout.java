@@ -4,8 +4,18 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Random;
 
-public class Layout extends JFrame{
+public class Layout extends JFrame {
+    JPanel jpNorth;
+    JPanel jpWest;
+    JPanel jpCenter;
+    JPanel jpEast;
+    JPanel jpSouth;
+    Random random;
 
     public Layout() {
         this.setTitle("Layoutmanager");
@@ -18,12 +28,12 @@ public class Layout extends JFrame{
     }
 
     private void initComponents() {
-        JPanel jpNorth = new JPanel();
-        JPanel jpWest = new JPanel();
-        JPanel jpCenter = new JPanel();
-        JPanel jpEast = new JPanel();
-        JPanel jpSouth = new JPanel();
-
+        jpNorth = new JPanel();
+        jpWest = new JPanel();
+        jpCenter = new JPanel();
+        jpEast = new JPanel();
+        jpSouth = new JPanel();
+        random = new Random(256);
         JLabel jlNorth = new JLabel("North");
         JLabel jlWest = new JLabel("West");
         JLabel jlCenter = new JLabel("Center");
@@ -49,6 +59,48 @@ public class Layout extends JFrame{
     }
 
     private void initEvents() {
+        MeinMouseListener mml;
+        mml = new MeinMouseListener();
+        mml.setPanel(jpNorth);
+        jpNorth.addMouseListener(mml);
 
+        mml = new MeinMouseListener();
+        mml.setPanel(jpSouth);
+        jpSouth.addMouseListener(mml);
+
+        mml = new MeinMouseListener();
+        mml.setPanel(jpEast);
+        jpEast.addMouseListener(mml);
+
+        mml = new MeinMouseListener();
+        mml.setPanel(jpWest);
+        jpWest.addMouseListener(mml);
+
+        mml = new MeinMouseListener();
+        mml.setPanel(jpCenter);
+        jpCenter.addMouseListener(mml);
+    }
+
+    // Innere Klasse
+    public class MeinMouseListener extends MouseAdapter {
+        JPanel jPanel;
+
+        public void setPanel(JPanel jPanel) {
+            this.jPanel = jPanel;
+        }
+
+        private void setzeFarbe() {
+            jPanel.setBackground(new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            setzeFarbe();
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setzeFarbe();
+        }
     }
 }
